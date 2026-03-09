@@ -1,0 +1,17 @@
+{
+	"geode": "5.2.0",
+	"gd": {
+		"win": "2.2081",
+		"android": "2.2081",
+		"mac": "2.2081",
+		"ios": "2.2081"
+	},
+	"id": "glowrock.delicious-decimals",
+	"name": "Delicious Decimals",
+	"version": "v1.0.0",
+	"developer": "GlowRock",
+	"description": "Add as many decimals as your hunger desires!",
+	"dependencies": {
+		"geode.node-ids": ">=v1.20.0"
+	}
+}
