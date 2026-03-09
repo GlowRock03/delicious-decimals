@@ -11,6 +11,11 @@
 	"version": "v1.0.0",
 	"developer": "GlowRock",
 	"description": "Add as many decimals as your hunger desires!",
+	"tags": ["joke"],
+    "links": {
+        "source": "https://github.com/GlowRock03/delicious-decimals",
+        "community": "https://discord.gg/4GQGcdZhff"
+    },
 	"dependencies": {
 		"geode.node-ids": ">=v1.20.0"
 	}
