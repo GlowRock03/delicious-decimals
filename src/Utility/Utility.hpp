@@ -1,8 +1,5 @@
 #pragma once
 
-#ifndef UTILITY_HPP
-#define UTILITY_HPP
-
 #include <Geode/Geode.hpp>
 
 using namespace geode::prelude;
@@ -16,5 +13,3 @@ public:
     static std::string addFakeDecimals(const std::string& base, size_t decimalLength, double value);
     static std::string padWithZeros(const std::string& base, size_t decimals);
 };
-
-#endif
