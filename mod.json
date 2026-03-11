@@ -12,6 +12,16 @@
 	"developer": "GlowRock",
 	"description": "Add as many decimals as your hunger desires!",
 	"tags": ["joke"],
+	"settings": {
+		"delicious-decimals": {
+			"name": "Delicious Decimals",
+			"description": "The amount of (delicious) decimals you want to display",
+			"type": "int",
+			"default": 0,
+			"min": 0,
+			"max": 1113
+		}
+	},
     "links": {
         "source": "https://github.com/GlowRock03/delicious-decimals",
         "community": "https://discord.gg/4GQGcdZhff"

@@ -16,9 +16,9 @@ void MyPauseLayer::customSetup() {
     rightSideMenu->updateLayout();
 }
 
-void MyPauseLayer::onDeliciousMenuOpened(CCObject*){
+void MyPauseLayer::onDeliciousMenuOpened(CCObject*) {
     log::info("delicious button was called");
-    auto deliciousPopup = DeliciousPopup::create(0);
+    auto deliciousPopup = DeliciousPopup::create();
     deliciousPopup->setID("Delicious-Popup"_spr);
     deliciousPopup->setZOrder(999);
     this->addChild(deliciousPopup);

@@ -26,7 +26,7 @@ void MyPlayLayer::updateProgressbar() {
 
     if (!m_percentageLabel || m_level->isPlatformer()) return;
 
-    size_t decimalLength = 1113; // max 1113
+    size_t decimalLength = static_cast<size_t>(Mod::get()->getSettingValue<int64_t>("delicious-decimals"));
 
     if (!m_fields->wrappingInitialized) {
 

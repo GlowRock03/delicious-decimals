@@ -6,11 +6,12 @@ using namespace geode::prelude;
 class DeliciousPopup : public Popup {
 public: 
 
-    static DeliciousPopup* create(int value);
+    static DeliciousPopup* create();
 
 protected:
 
-    std::string inputValue = "0";
+    int64_t deliciousDecimals;
 
     bool init(int value);
+    void onExit() override;
 };

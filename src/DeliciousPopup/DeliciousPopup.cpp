@@ -1,10 +1,10 @@
 #include "DeliciousPopup.hpp"
 
-DeliciousPopup* DeliciousPopup::create(int value) {
+DeliciousPopup* DeliciousPopup::create() {
 
     auto popup = new DeliciousPopup;
 
-    if (popup->init(value)) {
+    if (popup->init(0)) {
 
         popup->autorelease();
         return popup;
@@ -18,6 +18,8 @@ bool DeliciousPopup::init(int value) {
 
     if (!Popup::init(320.f, 140.f)) return false;
 
+    deliciousDecimals = Mod::get()->getSettingValue<int64_t>("delicious-decimals");
+
     auto titleSprite = CCLabelBMFont::create("Title Sprite", "bigFont.fnt");
     titleSprite->setPosition({ this->getContentWidth() / 2, (this->getContentHeight() / 2) + (this->getContentHeight() / 8) });
     this->addChild(titleSprite);
@@ -27,17 +29,32 @@ bool DeliciousPopup::init(int value) {
     inputTextTitle->setPosition({ this->getContentWidth() / 2, (this->getContentHeight() / 2) });
     this->addChild(inputTextTitle);
 
-    auto decimalInput = TextInput::create(100.f, "", "chatFont.fnt");
+    auto decimalInput = TextInput::create(100.f, std::to_string(deliciousDecimals), "chatFont.fnt");
     decimalInput->setFilter("0123456789");
     decimalInput->setCallback([this](std::string const& text) {
-        inputValue = text;
-        log::info("Result from input: {}", inputValue);
+        auto parsed = numFromString<int64_t>(text);
+        if (!parsed) {
+            log::info("mod setting not set");
+            return;
+        }
+        deliciousDecimals = *parsed;
+        log::info("Result from input: {}", deliciousDecimals);
+        Mod::get()->setSettingValue<int64_t>("delicious-decimals", deliciousDecimals);
     });
-    decimalInput->setString(inputValue);
+    decimalInput->setString(std::to_string(deliciousDecimals));
     decimalInput->setScale(0.8f);
     decimalInput->setPosition({ this->getContentWidth() / 2, (this->getContentHeight() / 2) - (this->getContentHeight() / 12)});
     decimalInput->setID("decimal-input"_spr);
     this->addChild(decimalInput);
 
     return true;
+}
+
+void DeliciousPopup::onExit() {
+
+    Popup::onExit();
+
+    if (auto pl = static_cast<PlayLayer*>(PlayLayer::get())) {
+        pl->updateProgressbar();
+    }
 }
