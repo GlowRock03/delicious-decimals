@@ -13,9 +13,11 @@ bool MyPlayLayer::init(GJGameLevel* level, bool useReplay, bool dontCreateObject
 
     if (!PlayLayer::init(level, useReplay, dontCreateObjects)) return false;
 
-    m_fields->extraLabelContainer = CCNode::create();                   // container needed early for online levels, Node IDs requirement
-    m_fields->extraLabelContainer->setID("extra-percent-labels"_spr);
-    this->addChild(m_fields->extraLabelContainer);
+    //if (!m_fields->extraLabelContainer) {
+        m_fields->extraLabelContainer = CCNode::create();                   // container needed early for online levels, Node IDs requirement
+        m_fields->extraLabelContainer->setID("extra-percent-labels"_spr);
+        this->addChild(m_fields->extraLabelContainer);
+    //}
 
     return true;
 }
@@ -26,7 +28,11 @@ void MyPlayLayer::updateProgressbar() {
 
     if (!m_percentageLabel || m_level->isPlatformer()) return;
 
-    size_t decimalLength = static_cast<size_t>(Mod::get()->getSettingValue<int64_t>("delicious-decimals"));
+    //size_t decimalLength = std::min(getMaxDecimals(), static_cast<size_t>(Mod::get()->getSettingValue<int64_t>("delicious-decimals")));
+    //Mod::get()->setSettingValue<int64_t>("delicious-decimals", static_cast<int64_t>(decimalLength));
+
+    size_t decimalLength = getDynamicDecimals(static_cast<size_t>(Mod::get()->getSettingValue<int64_t>("delicious-decimals")));
+    log::info("Dynamic length: {}", decimalLength);    
 
     if (!m_fields->wrappingInitialized) {
 
@@ -42,7 +48,9 @@ void MyPlayLayer::updateProgressbar() {
         std::string base = Utility::formatWithDecimals(percent, decimalLength);
         std::string fullPercentText;
 
-        if (percent == 0.0 || percent == 100.0) {
+        if (decimalLength == 0) {
+            fullPercentText = std::to_string((int)percent);
+        } else if (std::remainder(percent, 1.f) == 0) {
             fullPercentText = Utility::padWithZeros(base, decimalLength);
         } else {
             fullPercentText = Utility::addFakeDecimals(base, decimalLength, percent);
@@ -76,8 +84,7 @@ void MyPlayLayer::updateProgressbar() {
     m_fields->extraLabels.clear();
     m_percentageLabel->setString(lines[0].c_str());
 
-    float lineHeight = 15.f;
-    float y = m_percentageLabel->getPositionY() - lineHeight;
+    float y = m_percentageLabel->getPositionY() - m_fields->lineHeight;
 
     if (lines.size() > 1) {
 
@@ -94,7 +101,7 @@ void MyPlayLayer::updateProgressbar() {
             m_fields->extraLabelContainer->addChild(lbl);
             m_fields->extraLabels.push_back(lbl);
 
-            y -= lineHeight;
+            y -= m_fields->lineHeight;
         }
     }
 }
@@ -103,6 +110,11 @@ float MyPlayLayer::getScreenWidth() {
 
     auto winSize = CCDirector::sharedDirector()->getWinSize();
     return winSize.width;
+}
+
+float MyPlayLayer::getScreenHeight() {
+    auto winSize = CCDirector::sharedDirector()->getWinSize();
+    return winSize.height;
 }
 
 float MyPlayLayer::getAvailableWidth() {
@@ -141,41 +153,150 @@ std::vector<float> MyPlayLayer::getCharacterAdvances(CCLabelBMFont* label) {
     std::vector<float> advances;
 
     auto children = label->getChildren();
-
     if (!children) return advances;
 
     std::vector<CCNode*> sprites;
-
     for (auto obj : CCArrayExt(children)) {
-        
         sprites.push_back(static_cast<CCNode*>(obj));
     }
-
-    std::sort(sprites.begin(), sprites.end(), [](CCNode* a, CCNode* b) {
-        
-        return a->getPositionX() < b->getPositionX();
-    });
 
     for (size_t i = 0; i < sprites.size(); i++) {
 
         float pos = sprites[i]->getPositionX();
         float width = sprites[i]->getContentSize().width * sprites[i]->getScaleX();
-
         float left = pos - width * 0.5f;
 
         if (i + 1 < sprites.size()) {
-
             float nextPos = sprites[i + 1]->getPositionX();
             float nextWidth = sprites[i + 1]->getContentSize().width * sprites[i + 1]->getScaleX();
             float nextLeft = nextPos - nextWidth * 0.5f;
-
             advances.push_back(nextLeft - left);
         } else {
-
             float labelWidth = label->getContentSize().width;
             advances.push_back(labelWidth - left);
         }
     }
 
     return advances;
+}
+
+size_t MyPlayLayer::getMaxDecimals() {
+
+    if (m_fields->maxDecimalsComputed)
+        return m_fields->cachedMaxDecimals;
+
+    if (!m_percentageLabel) return 0;
+
+    float firstLineWidth = getAvailableWidth() * 2;
+    float otherLineWidth = getScreenWidth() * 2;
+
+    size_t maxLines = static_cast<size_t>(getScreenHeight() / m_fields->lineHeight);
+    if (maxLines == 0) return 0;
+
+    std::string mock = "100.";
+    mock.append(m_fields->MAX_DECIMALS, '0');
+    mock += "%";
+
+    auto tempLabel = CCLabelBMFont::create(mock.c_str(), m_percentageLabel->getFntFile());
+    tempLabel->setScale(m_percentageLabel->getScale());
+
+    auto advances = getCharacterAdvances(tempLabel);
+    auto lines = Utility::wrapTextByAdvances(mock, advances, firstLineWidth, otherLineWidth);
+
+    size_t charAmount = 0;
+    for (size_t i = 0; i < std::min(lines.size(), maxLines); i++) {
+        charAmount += lines[i].size();
+    }
+
+    size_t baseChars = 5;
+    if (charAmount <= baseChars) {
+        m_fields->cachedMaxDecimals = 0;
+    } else {
+        m_fields->cachedMaxDecimals = charAmount - baseChars;
+    }
+
+    m_fields->maxDecimalsComputed = true;
+    log::info("Max Deciamls Found: {}", m_fields->cachedMaxDecimals);
+    return m_fields->cachedMaxDecimals;
+}
+
+size_t MyPlayLayer::getDynamicDecimals(size_t decimalLength) {
+
+    if (!m_percentageLabel) return 0;
+
+    double percent = getActualProgress();
+    double rounded = std::floor(percent * 1000);
+
+    if (m_fields->cachedPercentRounded == rounded) return m_fields->cachedDecimalLength;
+
+    float firstLineWidth = getAvailableWidth() * 2;
+    float otherLineWidth = getScreenWidth() * 2;
+
+    size_t maxLines = static_cast<size_t>(getScreenHeight() / m_fields->lineHeight);
+    if (maxLines == 0) return 0;
+
+    if (decimalLength == getMaxDecimals()) {
+        decimalLength += 100;
+    }
+
+    std::string fullText = Utility::addFakeDecimals(
+        Utility::formatWithDecimals(percent, decimalLength),
+        decimalLength,
+        percent
+    ) + "%";
+
+    auto dynamicTempLabel = CCLabelBMFont::create(fullText.c_str(), m_percentageLabel->getFntFile());
+    dynamicTempLabel->setScale(m_percentageLabel->getScale());
+
+    auto advances = getCharacterAdvances(dynamicTempLabel);
+
+    static std::vector<float> cumAdvances;
+    cumAdvances.resize(advances.size());
+
+    if (!advances.empty()) {
+        cumAdvances[0] = advances[0];
+        for (size_t i = 1; i < advances.size(); i++) {
+            cumAdvances[i] = cumAdvances[i - 1] + advances[i];
+        }
+    }
+
+    size_t left = 0;
+    size_t right = decimalLength;
+    size_t best = 0;
+
+    while (left <= right) {
+
+        size_t mid = left + (right - left) / 2;
+        size_t testLen = 4 + mid + 1; // "100." + decimals + "%"
+        size_t lineStart = 0;
+        size_t lineCount = 1;
+
+        float limit = firstLineWidth;
+
+        for (size_t i = 0; i < testLen && i < cumAdvances.size(); i++) {
+
+            float cursor = cumAdvances[i] - (lineStart > 0 ? cumAdvances[lineStart - 1] : 0.f);
+
+            if (cursor > limit && i > lineStart) {
+
+                lineCount++;
+                lineStart = i;
+                limit = otherLineWidth;
+
+                if (lineCount > maxLines) break;
+            }
+        }
+
+        if (lineCount > maxLines) {
+            right = mid - 1;
+        } else {
+            best = mid;
+            left = mid + 1;
+        }
+    }
+
+    m_fields->cachedPercentRounded = rounded;
+    m_fields->cachedDecimalLength = best;
+
+    return best;
 }

@@ -15,11 +15,14 @@
 	"settings": {
 		"delicious-decimals": {
 			"name": "Delicious Decimals",
-			"description": "The amount of (delicious) decimals you want to display",
+			"description": "The amount of (Delicious) Decimals you want to display.\n\n\n[Note: This value will be limited to match your screen size when you open a level]",
 			"type": "int",
 			"default": 0,
 			"min": 0,
-			"max": 1113
+			"max": 99999,
+			"control": {
+				"slider": false
+			}
 		}
 	},
     "links": {

@@ -5,6 +5,7 @@
 #include <random>
 #include <algorithm>
 #include <cmath>
+#include <cstdint>
 
 std::vector<std::string> Utility::wrapTextByAdvances(const std::string& text, const std::vector<float>& advances, float firstLineWidth, float otherLineWidth) {
     
@@ -71,33 +72,31 @@ std::string Utility::formatWithDecimals(double value, size_t decimalLength) {
 
 std::string Utility::addFakeDecimals(const std::string& base, size_t decimalLength, double value) {
 
-    constexpr size_t MIN_PRECISION = 15;
-    size_t precisionDecimals = std::min(decimalLength, MIN_PRECISION);
-
-    if (std::remainder(value, 1.f) == 0) return padWithZeros(base, decimalLength);
+    if (std::remainder(value, 1.0) == 0.0) {
+        return padWithZeros(base, decimalLength);
+    }
 
     std::string result = base;
-
     size_t dot = result.find('.');
     if (dot == std::string::npos) {
-
         result += '.';
         dot = result.size() - 1;
     }
 
     size_t currentDecimals = result.size() - dot - 1;
 
-    static std::mt19937 rng(std::random_device{}());
-    std::uniform_int_distribution<int> dist(0, 9);
+    auto deterministicDigit = [value](size_t index) -> char {
+
+        std::uint64_t seed = static_cast<std::uint64_t>(std::llround(value * 1e6)) + (index * 2654435761u);
+        seed ^= (seed >> 13);
+        seed *= 0x5DEECE66Dull;
+        seed ^= (seed >> 17);
+        seed = seed % 10;
+        return '0' + static_cast<char>(seed);
+    };
 
     for (size_t i = currentDecimals; i < decimalLength; i++) {
-
-        result += char('0' + dist(rng));
-    }
-
-    if (decimalLength > precisionDecimals && result[dot + 1 + precisionDecimals] == '0') {
-
-        result[dot + 1 + precisionDecimals] = char('1' + dist(rng) % 9);
+        result += deterministicDigit(i);
     }
 
     return result;

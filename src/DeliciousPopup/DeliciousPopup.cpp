@@ -32,12 +32,14 @@ bool DeliciousPopup::init(int value) {
     auto decimalInput = TextInput::create(100.f, std::to_string(deliciousDecimals), "chatFont.fnt");
     decimalInput->setFilter("0123456789");
     decimalInput->setCallback([this](std::string const& text) {
+
         auto parsed = numFromString<int64_t>(text);
-        if (!parsed) {
-            log::info("mod setting not set");
-            return;
-        }
-        deliciousDecimals = *parsed;
+        if (!parsed) return;  
+
+        int64_t maxDecimals = 0;
+        if (auto pl = static_cast<MyPlayLayer*>(PlayLayer::get())) maxDecimals = pl->getMaxDecimals();
+        deliciousDecimals = std::clamp(*parsed, int64_t(0), maxDecimals);
+
         log::info("Result from input: {}", deliciousDecimals);
         Mod::get()->setSettingValue<int64_t>("delicious-decimals", deliciousDecimals);
     });

@@ -11,11 +11,22 @@ class $modify(MyPlayLayer, PlayLayer) {
 public:
 
     struct Fields {
+
         bool wrappingInitialized = false;
+        
         std::vector<CCLabelBMFont*> extraLabels;
         CCNode* extraLabelContainer = nullptr;
         std::string cachedPercentText = "";
         double cachedPercentValue = -1.0;
+
+        float lineHeight = 15.f;
+        size_t cachedMaxDecimals = 0;
+        bool maxDecimalsComputed = false;
+
+        double cachedPercentRounded = -1.0;
+        size_t cachedDecimalLength = 0;
+
+        const int MAX_DECIMALS = 2000;
     };
 
     static void onModify(auto& self);
@@ -24,7 +35,11 @@ public:
     void updateProgressbar();
 
     float getScreenWidth();
+    float getScreenHeight();
     float getAvailableWidth();
     double getActualProgress();
     std::vector<float> getCharacterAdvances(CCLabelBMFont* label);
+
+    size_t getMaxDecimals();
+    size_t getDynamicDecimals(size_t decimalLength);
 };
