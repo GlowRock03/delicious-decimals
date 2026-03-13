@@ -27,6 +27,9 @@ public:
         size_t cachedDecimalLength = 0;
 
         const int MAX_DECIMALS = 2000;
+
+        size_t currentDeviationDecimals = 0;
+        float deviationAccumulator = 0.f; 
     };
 
     static void onModify(auto& self);

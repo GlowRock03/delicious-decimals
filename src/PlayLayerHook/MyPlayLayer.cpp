@@ -19,6 +19,8 @@ bool MyPlayLayer::init(GJGameLevel* level, bool useReplay, bool dontCreateObject
         this->addChild(m_fields->extraLabelContainer);
     }
 
+    m_fields->currentDeviationDecimals = 0;
+
     return true;
 }
 
@@ -36,7 +38,18 @@ void MyPlayLayer::updateProgressbar() {
     } else if (dialSetting == "Dynamix") {
         decimalLength = getDynamicDecimals(static_cast<size_t>(Mod::get()->getSettingValue<int64_t>("delicious-decimals")));
     } else if (dialSetting == "Deviation") {
-        decimalLength = 12;
+
+        float deviationRate = Mod::get()->getSettingValue<float>("delicious-deviation-degree");
+        size_t maxDecimals = std::min(getMaxDecimals(), static_cast<size_t>(Mod::get()->getSettingValue<int64_t>("delicious-decimals")));
+
+        float growthPerFrame = static_cast<float>(deviationRate) / 100.f;
+        m_fields->deviationAccumulator += growthPerFrame;
+
+        size_t addDecimals = static_cast<size_t>(m_fields->deviationAccumulator);
+        m_fields->deviationAccumulator -= addDecimals;
+        m_fields->currentDeviationDecimals = std::min(m_fields->currentDeviationDecimals + addDecimals, maxDecimals);
+
+        decimalLength = m_fields->currentDeviationDecimals;
     }
 
     if (!m_fields->wrappingInitialized) {

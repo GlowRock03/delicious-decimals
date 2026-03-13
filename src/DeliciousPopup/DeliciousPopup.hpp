@@ -13,7 +13,7 @@ public:
 protected:
 
     int64_t deliciousDecimals;
-    int64_t deliciousRate;
+    float deliciousRate;
     std::vector<std::string> dialOptions = { "Definitive", "Dynamix", "Deviation" };
     int dialSettingIndex = 0;
 

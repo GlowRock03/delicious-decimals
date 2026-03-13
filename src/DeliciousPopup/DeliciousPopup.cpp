@@ -22,7 +22,7 @@ bool DeliciousPopup::init(int value) {
     buttonMenu->setPosition({0, 0});
 
     deliciousDecimals = Mod::get()->getSettingValue<int64_t>("delicious-decimals");
-    deliciousRate = Mod::get()->getSettingValue<int64_t>("delicious-deviation-degree");
+    deliciousRate = Mod::get()->getSettingValue<float>("delicious-deviation-degree");
     std::string dialTarget = Mod::get()->getSettingValue<std::string>("delicious-dial");
 
     for (int i = 0; i <= dialOptions.size(); i++) {
@@ -96,25 +96,23 @@ bool DeliciousPopup::init(int value) {
     this->addChild(rateTextTitle);
 
     // Rate Input
-    auto rateInput = TextInput::create(50.f, std::to_string(deliciousRate), "chatFont.fnt");
-    rateInput->setFilter("0123456789");
+    auto rateInput = TextInput::create(50.f, fmt::format("{:.3f}", deliciousRate), "chatFont.fnt");
+    rateInput->setFilter("0123456789.");
     rateInput->setCallback([this](std::string const& text) {
 
-        auto parsed = numFromString<int64_t>(text);
+        auto parsed = numFromString<float>(text);
         if (!parsed) return;
 
-        deliciousRate = std::clamp(*parsed, int64_t(0), int64_t(20));
+        deliciousRate = std::clamp(*parsed, 0.1f, 100.0f);
 
         log::info("Result from input: {}", deliciousRate);
-        Mod::get()->setSettingValue<int64_t>("delicious-deviation-degree", deliciousRate);
+        Mod::get()->setSettingValue<float>("delicious-deviation-degree", deliciousRate);
     });
-    rateInput->setString(std::to_string(deliciousRate));
+    rateInput->setString(fmt::format("{:.2f}", deliciousRate));
     rateInput->setScale(0.8f);
     rateInput->setPosition({ this->getContentWidth() / 2 + this->getContentWidth() / 8, (this->getContentHeight() / 2) - (this->getContentHeight() / 12)});
     rateInput->setID("rate-input");
     this->addChild(rateInput);
-
-
 
     this->addChild(buttonMenu);
 

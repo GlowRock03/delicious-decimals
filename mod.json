@@ -34,10 +34,10 @@
 		"delicious-deviation-degree": {
 			"name": "Delicious Deviation Degree (DDD)",
 			"description": "The rate of which the Delicious Decimals (DD) increase\n\nEnsure you enable the Distribution in Delicious Dial (DD) setting to use this feature.",
-			"type": "int",
-			"default": 1,
-			"min": 1,
-			"max": 20
+			"type": "float",
+			"default": 0.1,
+			"min": 0.1,
+			"max": 100.0
 		}
 	},
     "links": {
