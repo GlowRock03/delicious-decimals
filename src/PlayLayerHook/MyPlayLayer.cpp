@@ -13,11 +13,11 @@ bool MyPlayLayer::init(GJGameLevel* level, bool useReplay, bool dontCreateObject
 
     if (!PlayLayer::init(level, useReplay, dontCreateObjects)) return false;
 
-    //if (!m_fields->extraLabelContainer) {
+    if (!m_fields->extraLabelContainer) {
         m_fields->extraLabelContainer = CCNode::create();                   // container needed early for online levels, Node IDs requirement
         m_fields->extraLabelContainer->setID("extra-percent-labels"_spr);
         this->addChild(m_fields->extraLabelContainer);
-    //}
+    }
 
     return true;
 }
@@ -28,11 +28,16 @@ void MyPlayLayer::updateProgressbar() {
 
     if (!m_percentageLabel || m_level->isPlatformer()) return;
 
-    //size_t decimalLength = std::min(getMaxDecimals(), static_cast<size_t>(Mod::get()->getSettingValue<int64_t>("delicious-decimals")));
-    //Mod::get()->setSettingValue<int64_t>("delicious-decimals", static_cast<int64_t>(decimalLength));
-
-    size_t decimalLength = getDynamicDecimals(static_cast<size_t>(Mod::get()->getSettingValue<int64_t>("delicious-decimals")));
-    log::info("Dynamic length: {}", decimalLength);    
+    std::string dialSetting = Mod::get()->getSettingValue<std::string>("delicious-dial");
+    size_t decimalLength;
+    if (dialSetting == "Definitive") {
+        decimalLength = std::min(getMaxDecimals(), static_cast<size_t>(Mod::get()->getSettingValue<int64_t>("delicious-decimals")));
+        Mod::get()->setSettingValue<int64_t>("delicious-decimals", static_cast<int64_t>(decimalLength));
+    } else if (dialSetting == "Dynamix") {
+        decimalLength = getDynamicDecimals(static_cast<size_t>(Mod::get()->getSettingValue<int64_t>("delicious-decimals")));
+    } else if (dialSetting == "Deviation") {
+        decimalLength = 12;
+    }
 
     if (!m_fields->wrappingInitialized) {
 

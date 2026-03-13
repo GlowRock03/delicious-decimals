@@ -13,9 +13,16 @@
 	"description": "Add as many decimals as your hunger desires!",
 	"tags": ["joke"],
 	"settings": {
+		"delicious-dial": {
+			"name": "Delicious Dial (DD)",
+			"description": "Choose how your Delicious Decimals behave.\n\nDefinitive: The 'classic' mode. It directly uses your Delicious Decimal (DD) input.\n\nDynamix: Keeps your % in a constant place. This is noticable with a larger Delicious Decimal (DD).\nRISK: With larger values, this will lag the game.\n\nDeviation: Sequentially adds more Delicious Decimals to your screen based on Delicious Deviation Degree (DDD)",
+			"type": "string",
+			"default": "Definitive",
+			"one-of": ["Definitive", "Dynamix", "Deviation"]
+		},
 		"delicious-decimals": {
-			"name": "Delicious Decimals",
-			"description": "The amount of (Delicious) Decimals you want to display.\n\n\n[Note: This value will be limited to match your screen size when you open a level]",
+			"name": "Delicious Decimals (DD)",
+			"description": "The amount of Delicious Decimals (DD) you want to display.\n\nNote: This value will be limited to match your screen size when you open a level.",
 			"type": "int",
 			"default": 0,
 			"min": 0,
@@ -23,6 +30,14 @@
 			"control": {
 				"slider": false
 			}
+		},
+		"delicious-deviation-degree": {
+			"name": "Delicious Deviation Degree (DDD)",
+			"description": "The rate of which the Delicious Decimals (DD) increase\n\nEnsure you enable the Distribution in Delicious Dial (DD) setting to use this feature.",
+			"type": "int",
+			"default": 1,
+			"min": 1,
+			"max": 20
 		}
 	},
     "links": {

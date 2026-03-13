@@ -13,7 +13,15 @@ public:
 protected:
 
     int64_t deliciousDecimals;
+    int64_t deliciousRate;
+    std::vector<std::string> dialOptions = { "Definitive", "Dynamix", "Deviation" };
+    int dialSettingIndex = 0;
+
+    TextInput* dialInput = nullptr;
 
     bool init(int value);
     void onExit() override;
+
+    void onLeftDialButton(CCObject* sender);
+    void onRightDialButton(CCObject* sender);
 };
