@@ -96,7 +96,7 @@ bool DeliciousPopup::init(int value) {
     this->addChild(rateTextTitle);
 
     // Rate Input
-    auto rateInput = TextInput::create(50.f, fmt::format("{:.3f}", deliciousRate), "chatFont.fnt");
+    auto rateInput = TextInput::create(50.f, fmt::format("{:.1f}", deliciousRate), "chatFont.fnt");
     rateInput->setFilter("0123456789.");
     rateInput->setCallback([this](std::string const& text) {
 
@@ -108,7 +108,7 @@ bool DeliciousPopup::init(int value) {
         log::info("Result from input: {}", deliciousRate);
         Mod::get()->setSettingValue<float>("delicious-deviation-degree", deliciousRate);
     });
-    rateInput->setString(fmt::format("{:.2f}", deliciousRate));
+    rateInput->setString(fmt::format("{:.1f}", deliciousRate));
     rateInput->setScale(0.8f);
     rateInput->setPosition({ this->getContentWidth() / 2 + this->getContentWidth() / 8, (this->getContentHeight() / 2) - (this->getContentHeight() / 12)});
     rateInput->setID("rate-input");
