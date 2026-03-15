@@ -16,36 +16,50 @@ DeliciousPopup* DeliciousPopup::create() {
 
 bool DeliciousPopup::init(int value) {
 
-    if (!Popup::init(320.f, 140.f)) return false;
-
-    auto buttonMenu = CCMenu::create();
-    buttonMenu->setPosition({0, 0});
+    if (!Popup::init(300.f, 210.f)) return false;
 
     deliciousDecimals = Mod::get()->getSettingValue<int64_t>("delicious-decimals");
     deliciousRate = Mod::get()->getSettingValue<float>("delicious-deviation-degree");
     std::string dialTarget = Mod::get()->getSettingValue<std::string>("delicious-dial");
 
-    for (int i = 0; i <= dialOptions.size(); i++) {
+    for (int i = 0; i < dialOptions.size(); i++) {
         if (dialOptions[i] == dialTarget) {
             dialSettingIndex = i;
         }
     }
 
-    // Title Sprite
+    auto mainContainer = CCNode::create();
+    mainContainer->setLayout(AnchorLayout::create());
+    mainContainer->setContentSize(m_buttonMenu->getContentSize());
+    mainContainer->setAnchorPoint({0.5f, 0.5f});
+    mainContainer->setPosition(this->getContentSize() / 2);
+    mainContainer->setID("main-content-node");
+    this->addChild(mainContainer);
+
+
+    // Title Sprite Row
     auto titleSprite = CCLabelBMFont::create("Title Sprite", "bigFont.fnt");
-    titleSprite->setPosition({ this->getContentWidth() / 2, (this->getContentHeight() / 2) + (this->getContentHeight() / 8) });
+    titleSprite->setLayoutOptions(AnchorLayoutOptions::create()->setAnchor(Anchor::Top)->setOffset({0.f, -30.f}));
     titleSprite->setID("title-sprite");
-    this->addChild(titleSprite);
+    
+
+    // Delicious Decimal Row
+    auto decimalRow = CCNode::create();
+    decimalRow->setLayoutOptions(AnchorLayoutOptions::create()->setAnchor(Anchor::Center)->setOffset({0.f, 20.f}));
+    decimalRow->setLayout(AnchorLayout::create());
+    decimalRow->setAnchorPoint({0.5f, 0.5f});
+    decimalRow->setContentSize({m_buttonMenu->getContentSize().height, 30.f});
+    decimalRow->setID("delicious-decimal-node");
 
     // Decimal Title
     auto decimalTextTitle = CCLabelBMFont::create("Delicious Decimals (DD):", "bigFont.fnt");
+    decimalTextTitle->setLayoutOptions(AnchorLayoutOptions::create()->setAnchor(Anchor::Top)->setOffset({0.f, 10.f}));
     decimalTextTitle->setScale(0.3f);
-    decimalTextTitle->setPosition({ this->getContentWidth() / 2 - this->getContentWidth() / 8, (this->getContentHeight() / 2) });
-    decimalTextTitle->setID("decimal-text");
-    this->addChild(decimalTextTitle);
+    decimalTextTitle->setID("delicious-decimal-label");
 
     // Decimal Input
     auto decimalInput = TextInput::create(50.f, std::to_string(deliciousDecimals), "chatFont.fnt");
+    decimalInput->setLayoutOptions(AnchorLayoutOptions::create()->setAnchor(Anchor::Center));
     decimalInput->setFilter("0123456789");
     decimalInput->setCallback([this](std::string const& text) {
 
@@ -61,42 +75,69 @@ bool DeliciousPopup::init(int value) {
     });
     decimalInput->setString(std::to_string(deliciousDecimals));
     decimalInput->setScale(0.8f);
-    decimalInput->setPosition({ this->getContentWidth() / 2 - this->getContentWidth() / 8, (this->getContentHeight() / 2) - (this->getContentHeight() / 12)});
-    decimalInput->setID("decimal-input");
-    this->addChild(decimalInput);
+    decimalInput->setID("delicious-decimal-input");
+
+    decimalRow->addChild(decimalTextTitle);
+    decimalRow->addChild(decimalInput);
+    decimalRow->updateLayout();
+
+
+    // Dial Input Row
+    auto dialRow = CCMenu::create();
+    dialRow->setLayoutOptions(AnchorLayoutOptions::create()->setAnchor(Anchor::Center)->setOffset({0.f, -20.f}));
+    dialRow->setLayout(AnchorLayout::create());
+    dialRow->setAnchorPoint({0.5f, 0.5f});
+    dialRow->setContentSize({m_buttonMenu->getContentSize().height, 30.f});
+    dialRow->setID("dial-node");
+
 
     // Dial Left Button
-    auto leftDialButton = CCMenuItemSpriteExtra::create(CCSprite::createWithSpriteFrameName("GJ_arrow_01_001.png"), this, menu_selector(DeliciousPopup::onLeftDialButton));
+    auto leftSprite = CCSprite::createWithSpriteFrameName("GJ_arrow_01_001.png");
+    leftSprite->setScale(0.8f);
+    auto leftDialButton = CCMenuItemSpriteExtra::create(leftSprite, this, menu_selector(DeliciousPopup::onLeftDialButton));
+    leftDialButton->setLayoutOptions(AnchorLayoutOptions::create()->setAnchor(Anchor::Left)->setOffset({50.f, 0.f}));
     leftDialButton->setID("left-dial-button");
-    leftDialButton->setPosition({300, 100});
-    buttonMenu->addChild(leftDialButton);
 
     // Dial Title
     dialInput = TextInput::create(50.f, dialOptions[dialSettingIndex], "bigFont.fnt");
+    dialInput->setLayoutOptions(AnchorLayoutOptions::create()->setAnchor(Anchor::Center));
     dialInput->setString(dialOptions[dialSettingIndex]);
-    dialInput->setScale(0.8f);
+    dialInput->setScale(2.f);
     dialInput->setEnabled(false);
     dialInput->hideBG();
-    dialInput->setPosition({350, 100});
-    buttonMenu->addChild(dialInput);
+    dialInput->setID("dial-label");
 
     // Dial Right Button
     auto rightSprite = CCSprite::createWithSpriteFrameName("GJ_arrow_01_001.png");
     rightSprite->setFlipX(true);
+    rightSprite->setScale(0.8f);
     auto rightDialButton = CCMenuItemSpriteExtra::create(rightSprite, this, menu_selector(DeliciousPopup::onRightDialButton));
+    rightDialButton->setLayoutOptions(AnchorLayoutOptions::create()->setAnchor(Anchor::Right)->setOffset({-50.f, 0.f}));
     rightDialButton->setID("right-dial-button");
-    rightDialButton->setPosition({400, 100});
-    buttonMenu->addChild(rightDialButton);
+
+    dialRow->addChild(leftDialButton);
+    dialRow->addChild(dialInput);
+    dialRow->addChild(rightDialButton);
+    dialRow->updateLayout();
+    
+
+    // Growth Rate Row
+    auto growthRateRow = CCNode::create();
+    growthRateRow->setLayoutOptions(AnchorLayoutOptions::create()->setAnchor(Anchor::Bottom)->setOffset({0.f, 50.f}));
+    growthRateRow->setLayout(AnchorLayout::create());
+    growthRateRow->setAnchorPoint({0.5f, 0.5f});
+    growthRateRow->setContentSize({m_buttonMenu->getContentSize().height, 30.f});
+    growthRateRow->setID("delicious-deviation-degree-node");
 
     // Rate Title
     auto rateTextTitle = CCLabelBMFont::create("Delicious Deviation Degree (DDD):", "bigFont.fnt");
+    rateTextTitle->setLayoutOptions(AnchorLayoutOptions::create()->setAnchor(Anchor::Center));
     rateTextTitle->setScale(0.3f);
-    rateTextTitle->setPosition({ this->getContentWidth() / 2 + this->getContentWidth() / 8, (this->getContentHeight() / 2) });
-    rateTextTitle->setID("decimal-text");
-    this->addChild(rateTextTitle);
+    rateTextTitle->setID("delicious-deviation-degree-label");
 
     // Rate Input
     auto rateInput = TextInput::create(50.f, fmt::format("{:.1f}", deliciousRate), "chatFont.fnt");
+    rateInput->setLayoutOptions(AnchorLayoutOptions::create()->setAnchor(Anchor::Bottom)->setOffset({0.f, -10.f}));
     rateInput->setFilter("0123456789.");
     rateInput->setCallback([this](std::string const& text) {
 
@@ -110,12 +151,18 @@ bool DeliciousPopup::init(int value) {
     });
     rateInput->setString(fmt::format("{:.1f}", deliciousRate));
     rateInput->setScale(0.8f);
-    rateInput->setPosition({ this->getContentWidth() / 2 + this->getContentWidth() / 8, (this->getContentHeight() / 2) - (this->getContentHeight() / 12)});
-    rateInput->setID("rate-input");
-    this->addChild(rateInput);
+    rateInput->setID("delicious-deviation-degree-input");
 
-    this->addChild(buttonMenu);
+    growthRateRow->addChild(rateTextTitle);
+    growthRateRow->addChild(rateInput);
+    growthRateRow->updateLayout();
 
+
+    mainContainer->addChild(growthRateRow);
+    mainContainer->addChild(dialRow);
+    mainContainer->addChild(decimalRow);
+    mainContainer->addChild(titleSprite);
+    mainContainer->updateLayout();
     return true;
 }
 
