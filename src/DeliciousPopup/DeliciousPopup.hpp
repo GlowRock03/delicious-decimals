@@ -24,4 +24,7 @@ protected:
 
     void onLeftDialButton(CCObject* sender);
     void onRightDialButton(CCObject* sender);
+    void onDecimalInfoButton(CCObject* sender);
+    void onDialInfoButton(CCObject* sender);
+    void onRateInfoButton(CCObject* sender);
 };

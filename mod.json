@@ -15,14 +15,14 @@
 	"settings": {
 		"delicious-dial": {
 			"name": "Delicious Dial (DD)",
-			"description": "Choose how your Delicious Decimals behave.\n\nDefinitive: The 'classic' mode. It directly uses your Delicious Decimal (DD) input.\n\nDynamix: Keeps your % in a constant place. This is noticable with a larger Delicious Decimal (DD).\nRISK: With larger values, this will lag the game.\n\nDeviation: Sequentially adds more Delicious Decimals to your screen based on Delicious Deviation Degree (DDD)",
+			"description": "Choose how your <cp>Delicious Decimals (DD)</cp> behave.\n\n<cj>Definitive</cj>: The 'classic' mode. It directly uses your <cp>Delicious Decimals (DD)</cp> input.\n\n<cj>Dynamix</cj>: Keeps your % in a constant place. This is noticeable with a larger <cp>Delicious Decimals (DD)</cp>.\n<cr>RISK</cr>: With larger values, this will lag the game.\n\n<cj>Deviation</cj>: Sequentially adds more <cp>Delicious Decimals (DD)</cp> to your screen based on <cf>Delicious Deviation Degree</cf> <cp>(DDD)</cp>",
 			"type": "string",
 			"default": "Definitive",
 			"one-of": ["Definitive", "Dynamix", "Deviation"]
 		},
 		"delicious-decimals": {
 			"name": "Delicious Decimals (DD)",
-			"description": "The amount of Delicious Decimals (DD) you want to display.\n\nNote: This value will be limited to match your screen size when you open a level.",
+			"description": "The amount of <cp>Delicious Decimals (DD)</cp> you want to display.\n\nMin: 0\n\nMax: This value will be limited to match your screen size when you open a level/close the mod Popup in the Pause Menu.",
 			"type": "int",
 			"default": 0,
 			"min": 0,
@@ -33,7 +33,7 @@
 		},
 		"delicious-deviation-degree": {
 			"name": "Delicious Deviation Degree (DDD)",
-			"description": "The rate of which the Delicious Decimals (DD) increase\n\nEnsure you enable the Distribution in Delicious Dial (DD) setting to use this feature.",
+			"description": "The rate of which the <cp>Delicious Decimals (DD)</cp> increase\n\nEnsure you enable the <cj>Distribution</cj> in <cp>Delicious Dial (DD)</cp> setting to use this feature.\n\nMin: 0.1\n\nMax: 100.0",
 			"type": "float",
 			"default": 10,
 			"min": 0.1,
