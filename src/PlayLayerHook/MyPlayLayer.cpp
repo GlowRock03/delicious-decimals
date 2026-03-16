@@ -1,14 +1,6 @@
 #include "MyPlayLayer.hpp"
 #include "../Utility/Utility.hpp"
 
-void MyPlayLayer::onModify(auto& self) {
-
-    if (!self.setHookPriorityPost("PlayLayer::updateProgressbar", Priority::Last)) {
-
-        geode::log::warn("Failed to set hook priority");
-    }
-}
-
 bool MyPlayLayer::init(GJGameLevel* level, bool useReplay, bool dontCreateObjects) {
 
     if (!PlayLayer::init(level, useReplay, dontCreateObjects)) return false;

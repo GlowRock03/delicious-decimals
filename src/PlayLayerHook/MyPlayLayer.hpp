@@ -32,7 +32,12 @@ public:
         float deviationAccumulator = 0.f; 
     };
 
-    static void onModify(auto& self);
+    template <typename T>
+    static void onModify(T& self) {
+        if (!self.setHookPriorityPost("PlayLayer::updateProgressbar", Priority::Last)) {
+            geode::log::warn("Failed to set hook priority");
+        }
+    }
 
     bool init(GJGameLevel* level, bool useReplay, bool dontCreateObjects);
     void updateProgressbar();
@@ -45,4 +50,5 @@ public:
 
     size_t getMaxDecimals();
     size_t getDynamicDecimals(size_t decimalLength);
+
 };
