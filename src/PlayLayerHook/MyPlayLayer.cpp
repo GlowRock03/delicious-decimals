@@ -226,7 +226,6 @@ size_t MyPlayLayer::getMaxDecimals() {
     }
 
     m_fields->maxDecimalsComputed = true;
-    log::info("Max Deciamls Found: {}", m_fields->cachedMaxDecimals);
     return m_fields->cachedMaxDecimals;
 }
 
