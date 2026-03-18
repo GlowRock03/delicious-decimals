@@ -1,11 +1,10 @@
 #pragma once
 
+#include "../../Utility/Utility.hpp"
+
 #include <Geode/Geode.hpp>
 #include <Geode/modify/PlayLayer.hpp>
 #include <Geode/binding/GameManager.hpp>
-
-#include <vector>
-#include <string>
 
 using namespace geode::prelude;
 

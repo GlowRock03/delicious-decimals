@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../Utility/Utility.hpp"
-#include "../PlayLayerHook/MyPlayLayer.hpp"
+#include "../../Utility/Utility.hpp"
+#include "../../Hooks/PlayLayerHook/MyPlayLayer.hpp"
 #include "../InfoPopup/InfoPopup.hpp"
 
 #include <Geode/Geode.hpp>

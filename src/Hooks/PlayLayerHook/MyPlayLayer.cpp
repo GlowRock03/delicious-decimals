@@ -1,5 +1,4 @@
 #include "MyPlayLayer.hpp"
-#include "../Utility/Utility.hpp"
 
 bool MyPlayLayer::init(GJGameLevel* level, bool useReplay, bool dontCreateObjects) {
 

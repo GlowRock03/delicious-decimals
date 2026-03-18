@@ -3,7 +3,7 @@
 #include <Geode/Geode.hpp>
 #include <Geode/modify/PauseLayer.hpp>
 
-#include "../DeliciousPopup/DeliciousPopup.hpp"
+#include "../../Popups/DeliciousPopup/DeliciousPopup.hpp"
 
 using namespace geode::prelude;
 

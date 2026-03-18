@@ -1,12 +1,5 @@
 #include "Utility.hpp"
 
-#include <sstream>
-#include <iomanip>
-#include <random>
-#include <algorithm>
-#include <cmath>
-#include <cstdint>
-
 std::vector<std::string> Utility::wrapTextByAdvances(const std::string& text, const std::vector<float>& advances, float firstLineWidth, float otherLineWidth) {
     
     std::vector<std::string> lines;
