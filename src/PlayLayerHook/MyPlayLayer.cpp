@@ -77,7 +77,7 @@ void MyPlayLayer::updateProgressbar() {
     m_percentageLabel->setString(fullText.c_str());
     auto advances = getCharacterAdvances(m_percentageLabel);
 
-    float firstLineWidth = getAvailableWidth() * 2;
+    float firstLineWidth = GameManager::sharedState()->m_showProgressBar ? getAvailableWidth() * 2 : getScreenWidth() * 2;
     float otherLineWidth = getScreenWidth() * 2;
 
     auto lines = Utility::wrapTextByAdvances(fullText, advances, firstLineWidth, otherLineWidth);
@@ -192,12 +192,15 @@ std::vector<float> MyPlayLayer::getCharacterAdvances(CCLabelBMFont* label) {
 
 size_t MyPlayLayer::getMaxDecimals() {
 
-    if (m_fields->maxDecimalsComputed)
-        return m_fields->cachedMaxDecimals;
+    if (m_fields->computedWithProgressbar != GameManager::sharedState()->m_showProgressBar) m_fields->maxDecimalsComputed = false;
+
+    if (m_fields->maxDecimalsComputed) return m_fields->cachedMaxDecimals;
 
     if (!m_percentageLabel) return 0;
 
-    float firstLineWidth = getAvailableWidth() * 2;
+    m_fields->computedWithProgressbar = GameManager::sharedState()->m_showProgressBar;
+
+    float firstLineWidth = GameManager::sharedState()->m_showProgressBar ? getAvailableWidth() * 2 : getScreenWidth() * 2;
     float otherLineWidth = getScreenWidth() * 2;
 
     size_t maxLines = static_cast<size_t>(getScreenHeight() / m_fields->lineHeight);
@@ -238,12 +241,12 @@ size_t MyPlayLayer::getDynamicDecimals(size_t decimalLength) {
 
     if (m_fields->cachedPercentRounded == rounded) return m_fields->cachedDecimalLength;
 
-    float firstLineWidth = getAvailableWidth() * 2;
+    float firstLineWidth = GameManager::sharedState()->m_showProgressBar ? getAvailableWidth() * 2 : getScreenWidth() * 2;
     float otherLineWidth = getScreenWidth() * 2;
 
     size_t maxLines = static_cast<size_t>(getScreenHeight() / m_fields->lineHeight);
     if (maxLines == 0) return 0;
-
+    
     if (decimalLength == getMaxDecimals()) {
         decimalLength += 100;
     }

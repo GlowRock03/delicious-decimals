@@ -2,6 +2,8 @@
 
 #include <Geode/Geode.hpp>
 #include <Geode/modify/PlayLayer.hpp>
+#include <Geode/binding/GameManager.hpp>
+
 #include <vector>
 #include <string>
 
@@ -22,6 +24,7 @@ public:
         float lineHeight = 15.f;
         size_t cachedMaxDecimals = 0;
         bool maxDecimalsComputed = false;
+        bool computedWithProgressbar = true;
 
         double cachedPercentRounded = -1.0;
         size_t cachedDecimalLength = 0;
@@ -50,5 +53,4 @@ public:
 
     size_t getMaxDecimals();
     size_t getDynamicDecimals(size_t decimalLength);
-
 };
