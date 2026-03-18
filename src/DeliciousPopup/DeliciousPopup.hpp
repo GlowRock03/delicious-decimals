@@ -2,6 +2,7 @@
 
 #include "../Utility/Utility.hpp"
 #include "../PlayLayerHook/MyPlayLayer.hpp"
+#include "../InfoPopup/InfoPopup.hpp"
 
 #include <Geode/Geode.hpp>
 using namespace geode::prelude;

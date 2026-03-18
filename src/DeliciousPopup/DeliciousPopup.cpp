@@ -79,7 +79,7 @@ bool DeliciousPopup::init(int value) {
     // Delicious Decimal Row
     // Delicious Decimal Container
     auto decimalRow = CCNode::create();
-    decimalRow->setLayoutOptions(AnchorLayoutOptions::create()->setAnchor(Anchor::Center)->setOffset({0.f, 10.f}));
+    decimalRow->setLayoutOptions(AnchorLayoutOptions::create()->setAnchor(Anchor::Center)->setOffset({0.f, -31.f}));
     decimalRow->setLayout(AnchorLayout::create());
     decimalRow->setAnchorPoint({0.5f, 0.5f});
     decimalRow->setContentSize({m_buttonMenu->getContentSize().height, 30.f});
@@ -141,7 +141,7 @@ bool DeliciousPopup::init(int value) {
     // Dial Input Row
     // Container
     auto dialRow = CCMenu::create();
-    dialRow->setLayoutOptions(AnchorLayoutOptions::create()->setAnchor(Anchor::Center)->setOffset({0.f, -25.f}));
+    dialRow->setLayoutOptions(AnchorLayoutOptions::create()->setAnchor(Anchor::Center)->setOffset({0.f, 22.f}));
     dialRow->setLayout(AnchorLayout::create());
     dialRow->setAnchorPoint({0.5f, 0.5f});
     dialRow->setContentSize({m_buttonMenu->getContentSize().height, 30.f});
@@ -314,22 +314,36 @@ void DeliciousPopup::onRightDialButton(CCObject* sender) {
     Mod::get()->setSettingValue<std::string>("delicious-dial", dialOptions[dialSettingIndex]);
 }
 
-//TO DO: create a popup for help
-//Note: FLAlertLayer does not fit my needs
-
 void DeliciousPopup::onDecimalInfoButton(CCObject* sender) {
 
-    //"Delicious Decimals (DD): Help"
-    //"The amount of <cp>Delicious Decimals (DD)</cp> you want to display.\n\nMin: 0\n\nMax: This value will be limited to match your screen size when you open a level/close the mod Popup in the Pause Menu."
+    InfoPopup::create(
+        "Delicious Decimals (DD)",
+        "The amount of <cp>Delicious Decimals (DD)</c> you want to display.\n\n"
+        "Min: 0\n\n"
+        "Max: This value will be limited to match your screen size when you open a level/close the mod Popup in the Pause Menu.",
+        170.f
+    )->show();
 }
 void DeliciousPopup::onDialInfoButton(CCObject* sender) {
 
-    //"Delicious Dial (DD): Help"
-    //"Choose how your <cp>Delicious Decimals (DD)</cp> behave.\n\n<cj>Definitive</cj>: The 'classic' mode. It directly uses your <cp>Delicious Decimals (DD)</cp> input.\n\n<cj>Dynamix</cj>: Keeps your % in a constant place. This is noticeable with a larger <cp>Delicious Decimals (DD)</cp>.\n<cr>RISK</cr>: With larger values, this will lag the game.\n\n<cj>Deviation</cj>: Sequentially adds more <cp>Delicious Decimals (DD)</cp> to your screen based on <cf>Delicious Deviation Degree</cf> <cp>(DDD)</cp>"
+    InfoPopup::create(
+        "Delicious Dial (DD)",
+        "Choose how your <cp>Delicious Decimals (DD)</c> behave.\n\n"
+        "<cj>Definitive</c>: The 'classic' mode. It directly uses your <cp>Delicious Decimals (DD)</c> input.\n\n"
+        "<cj>Dynamix</c>: Keeps your % in a constant place. This is noticeable with a larger <cp>Delicious Decimals (DD)</c>.\n<cr>RISK</c>: With larger values, this will lag the game.\n\n"
+        "<cj>Deviation</c>: Sequentially adds more <cp>Delicious Decimals (DD)</c> to your screen based on <cf>Delicious Deviation Degree</c> <cp>(DDD)</c>",
+        210.f
+    )->show();
 }
 
 void DeliciousPopup::onRateInfoButton(CCObject* sender) {
 
-    //"Delicious Deviation Degree (DDD): Help"
-    //"The rate of which the <cp>Delicious Decimals (DD)</cp> increase\n\nEnsure you enable the <cj>Distribution</cj> in <cp>Delicious Dial (DD)</cp> setting to use this feature.\n\nMin: 0.1\n\nMax: 100.0"
+    InfoPopup::create(
+        "Delicious Deviation Degree (DDD)",
+        "The rate of which the <cp>Delicious Decimals (DD)</c> increase\n\n"
+        "Ensure you enable the <cj>Distribution</c> in <cp>Delicious Dial (DD)</c> setting to use this feature.\n\n"
+        "Min: 0.1\n\n"
+        "Max: 100.0",
+        180.f
+    )->show();
 }
