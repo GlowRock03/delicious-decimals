@@ -12,6 +12,9 @@ Use 3 different settings to display your <cp>Delicious Decimals (DD)</c>: <cj>De
 
 Note that after 15 <cp>Delicious Decimals (DD)</c>, the following <cp>Delicious Decimals (DD)</c> are all fake due to the Precision Limit.
 
+## <cy>Credits</c>
+A HUGE thanks to Mirk ([twitch.tv/mirkrin_](https://www.twitch.tv/mirkrin_)). He came up with the mod idea and all concept credits go to him :D cheers dude
+
 ## <cr>Issues</c>
 
 In <cj>Dynamix</c> mode <cy>AND</c> at high values mode <cr>you should except performance issues</c>.

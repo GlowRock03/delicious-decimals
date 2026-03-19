@@ -146,13 +146,10 @@ float MyPlayLayer::getAvailableWidth() {
 
 double MyPlayLayer::getActualProgress() {
 
-    double percent;
+    // implement the level % bug at some point
+    //double percent = static_cast<double>(m_player1->getPositionX()) / static_cast<double>(m_levelLength) * 100.0;
 
-    if (m_level->m_timestamp > 0) {
-        percent = (static_cast<double>(m_gameState.m_levelTime) * 240.0) / static_cast<double>(m_level->m_timestamp) * 100.0;
-    } else {
-        percent = static_cast<double>(m_player1->getPositionX()) / static_cast<double>(m_levelLength) * 100.0;
-    }
+    double percent = static_cast<double>(this->getCurrentPercent());
 
     return std::clamp(percent, 0.0, 100.0);
 }
