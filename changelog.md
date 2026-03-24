@@ -1,4 +1,6 @@
 # Delicious Decimals (DD) Changelog
+## v1.0.2
+- Defect Debug Setting (percentage bugfix)
 ## v1.0.1
 - Fixed % bug in playtesting (when not from 0%)
 - Mirk given proper credit :D

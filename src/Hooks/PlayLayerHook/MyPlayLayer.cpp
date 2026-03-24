@@ -146,10 +146,13 @@ float MyPlayLayer::getAvailableWidth() {
 
 double MyPlayLayer::getActualProgress() {
 
-    // implement the level % bug at some point
-    //double percent = static_cast<double>(m_player1->getPositionX()) / static_cast<double>(m_levelLength) * 100.0;
-
-    double percent = static_cast<double>(this->getCurrentPercent());
+    double percent;
+    if (Mod::get()->getSettingValue<bool>("defect-debug")) {
+        percent = this->m_player1->getPositionX() * 100.0 / this->m_levelLength;
+        this->m_progressFill->setTextureRect({0, 0, static_cast<float>(m_progressWidth * percent / 100.0), m_progressHeight});
+    } else {
+        percent = static_cast<double>(this->getCurrentPercent());
+    }
 
     return std::clamp(percent, 0.0, 100.0);
 }

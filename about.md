@@ -1,16 +1,12 @@
 # <cp>Delicious Decimals (DD)</c>
 
-Add as many <cp>Delicious Decimals</c> as your hunger desires!
+Add as many <cp>Delicious Decimals</c> as your hunger desires! Set the amount of accurate decimals, "<cp>Delicious Decimals (DD)</c>", to display on screen. Use 3 different settings to display your <cp>Delicious Decimals (DD)</c>: <cj>Definitive</c>, <cj>Dynamix</c>, and <cj>Deviation</c>. Note that after 15 <cp>Delicious Decimals (DD)</c>, the following <cp>Delicious Decimals (DD)</c> are all fake due to the Precision Limit.
 
-Set the amount of accurate decimals, "<cp>Delicious Decimals (DD)</c>", to display on screen.
+<cj>Definitive</c>: The amount of <cp>Delicious Decimals (DD)</c> you want to display.
 
-Use 3 different settings to display your <cp>Delicious Decimals (DD)</c>: <cj>Definitive</c>, <cj>Dynamix</c>, and <cj>Deviation</c>.
+<cj>Dynamix</c>: <cj>Dynamix</c>: Keeps your % in a constant place. This is noticeable with a larger <cp>Delicious Decimals (DD)</c>.
 
-<cj>Definitive</c>: The amount of <cp>Delicious Decimals (DD)</c> you want to display.\n
-<cj>Dynamix</c>: <cj>Dynamix</c>: Keeps your % in a constant place. This is noticeable with a larger <cp>Delicious Decimals (DD)</c>.\n
-<cj>Deviation</c>: Sequentially adds more <cp>Delicious Decimals (DD)</c> to your screen based on <cf>Delicious Deviation Degree</c> <cp>(DDD)</c>"\n
-
-Note that after 15 <cp>Delicious Decimals (DD)</c>, the following <cp>Delicious Decimals (DD)</c> are all fake due to the Precision Limit.
+<cj>Deviation</c>: Sequentially adds more <cp>Delicious Decimals (DD)</c> to your screen based on <cf>Delicious Deviation Degree</c> <cp>(DDD)</c>
 
 ## <cy>Credits</c>
 A HUGE thanks to Mirk ([twitch.tv/mirkrin_](https://www.twitch.tv/mirkrin_)). He came up with the mod idea and all concept credits go to him :D cheers dude

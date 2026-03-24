@@ -1,5 +1,5 @@
 {
-	"geode": "5.3.0",
+	"geode": "5.4.1",
 	"gd": {
 		"win": "2.2081",
 		"android": "2.2081",
@@ -8,14 +8,14 @@
 	},
 	"id": "glowrock.delicious-decimals",
 	"name": "Delicious Decimals",
-	"version": "v1.0.1",
+	"version": "v1.0.2",
 	"developer": "GlowRock",
 	"description": "Add as many decimals as your hunger desires!",
 	"tags": ["joke"],
 	"settings": {
 		"delicious-dial": {
 			"name": "Delicious Dial (DD)",
-			"description": "Choose how your <cp>Delicious Decimals (DD)</c> behave.\n\n<cj>Definitive</c>: The 'classic' mode. It directly uses your <cp>Delicious Decimals (DD)</c> input.\n\n<cj>Dynamix</c>: Keeps your % in a constant place. This is noticeable with a larger <cp>Delicious Decimals (DD)</c>.\n<cr>RISK</c>: With larger values, this will lag the game.\n\n<cj>Deviation</c>: Sequentially adds more <cp>Delicious Decimals (DD)</c> to your screen based on <cf>Delicious Deviation Degree</c> <cp>(DDD)</c>",
+			"description": "Choose how your <cp>Delicious Decimals (DD)</c> behave.\n\n<cj>Definitive</c>: The 'classic' mode. It directly uses your <cp>Delicious Decimals (DD)</c> input.\n\n<cj>Dynamix</c>: Keeps your % in a constant place. This is noticeable with a larger <cp>Delicious Decimals (DD)</c>.\n<cr>RISK</c>: With larger values, this will lag the game.\n\n<cj>Deviation</c>: Sequentially adds more <cp>Delicious Decimals (DD)</c> to your screen based on <cp>Delicious Deviation Degree (DDD)</c>",
 			"type": "string",
 			"default": "Definitive",
 			"one-of": ["Definitive", "Dynamix", "Deviation"]
@@ -38,6 +38,12 @@
 			"default": 10,
 			"min": 0.1,
 			"max": 100.0
+		},
+		"defect-debug": {
+			"name": "Defect Debug (DD)",
+			"description": "0% bugfix. <cc>Defect Debug (DD)</c> is most noticeable when play testing a level not from 0%.\n\nYour <cp>Delicious Decimals (DD)</c> (and progress bar) will be set to the correct percent in the level.",
+			"type": "bool",
+			"default": true
 		}
 	},
     "links": {
