@@ -8,7 +8,7 @@
 - Node IDs >v1.20.0
 
 # Automatic Install
-- Once this mod is accepted on the Geode Index, you can download it directly in Geometry Dash or on the Geode website.
+- Once this mod is accepted on the Geode Index, you can download it directly in Geometry Dash or manually install it from the [Geode website](https://geode-sdk.org/mods/glowrock.delicious-decimals).
 
 # Manual Install
 ## Download
