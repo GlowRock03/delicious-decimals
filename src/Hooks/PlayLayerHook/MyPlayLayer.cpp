@@ -148,7 +148,7 @@ double MyPlayLayer::getActualProgress() {
 
     double percent;
     if (Mod::get()->getSettingValue<bool>("defect-debug")) {
-        percent = this->m_player1->getPositionX() * 100.0 / this->m_levelLength;
+        percent = std::clamp(this->m_player1->getPositionX() * 100.0 / this->m_levelLength, 0.0, 100.0);
         this->m_progressFill->setTextureRect({0, 0, static_cast<float>(m_progressWidth * percent / 100.0), m_progressHeight});
     } else {
         percent = static_cast<double>(this->getCurrentPercent());

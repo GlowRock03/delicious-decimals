@@ -1,4 +1,6 @@
 # Delicious Decimals (DD) Changelog
+## v1.0.3
+- Progressbar fill no longer extends past the max fill when the player reaches 100% (with bugfix on)
 ## v1.0.2
 - Defect Debug Setting (percentage bugfix)
 ## v1.0.1
