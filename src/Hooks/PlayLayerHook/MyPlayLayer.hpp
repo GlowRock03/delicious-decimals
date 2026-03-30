@@ -43,6 +43,7 @@ public:
 
     bool init(GJGameLevel* level, bool useReplay, bool dontCreateObjects);
     void updateProgressbar();
+    void resetLevel();
 
     float getScreenWidth();
     float getScreenHeight();

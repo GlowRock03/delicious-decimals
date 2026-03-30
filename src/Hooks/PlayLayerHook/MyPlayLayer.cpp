@@ -7,7 +7,8 @@ bool MyPlayLayer::init(GJGameLevel* level, bool useReplay, bool dontCreateObject
     if (!m_fields->extraLabelContainer) {
         m_fields->extraLabelContainer = CCNode::create();                   // container needed early for online levels, Node IDs requirement
         m_fields->extraLabelContainer->setID("extra-percent-labels"_spr);
-        this->addChild(m_fields->extraLabelContainer);
+        auto uiLayer = this->getChildByID("UILayer");
+        if (uiLayer) uiLayer->addChild(m_fields->extraLabelContainer);
     }
 
     m_fields->currentDeviationDecimals = 0;
@@ -82,10 +83,10 @@ void MyPlayLayer::updateProgressbar() {
     auto lines = Utility::wrapTextByAdvances(fullText, advances, firstLineWidth, otherLineWidth);
 
     if (!m_fields->extraLabelContainer) {
-
         m_fields->extraLabelContainer = CCNode::create();
         m_fields->extraLabelContainer->setID("extra-percent-labels"_spr);
-        this->addChild(m_fields->extraLabelContainer);
+        auto uiLayer = this->getChildByID("UILayer");
+        if (uiLayer) uiLayer->addChild(m_fields->extraLabelContainer);
     }
 
     for (auto lbl : m_fields->extraLabels) lbl->removeFromParentAndCleanup(true);
@@ -113,6 +114,13 @@ void MyPlayLayer::updateProgressbar() {
             y -= m_fields->lineHeight;
         }
     }
+}
+
+void MyPlayLayer::resetLevel() {
+    PlayLayer::resetLevel();
+
+    m_fields->deviationAccumulator = 0.f;
+    m_fields->currentDeviationDecimals = 0;
 }
 
 float MyPlayLayer::getScreenWidth() {

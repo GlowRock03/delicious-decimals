@@ -1,4 +1,7 @@
 # Delicious Decimals (DD) Changelog
+## v1.0.4
+- Deviation Mode now restarts after every attempt
+- Shaders no longer break your Delicious Decimals (DD) when you have more than 1 line
 ## v1.0.3
 - Progressbar fill no longer extends past the max fill when the player reaches 100% (with bugfix on)
 ## v1.0.2
