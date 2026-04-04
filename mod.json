@@ -1,5 +1,5 @@
 {
-	"geode": "5.4.1",
+	"geode": "5.5.3",
 	"gd": {
 		"win": "2.2081",
 		"android": "2.2081",
@@ -8,7 +8,7 @@
 	},
 	"id": "glowrock.delicious-decimals",
 	"name": "Delicious Decimals",
-	"version": "v1.0.4",
+	"version": "v1.0.5",
 	"developer": "GlowRock",
 	"description": "Add as many decimals as your hunger desires!",
 	"tags": ["joke"],
@@ -33,7 +33,7 @@
 		},
 		"delicious-deviation-degree": {
 			"name": "Delicious Deviation Degree (DDD)",
-			"description": "The rate of which the <cp>Delicious Decimals (DD)</c> increase\n\nEnsure you enable the <cj>Distribution</c> in <cp>Delicious Dial (DD)</c> setting to use this feature.\n\nMin: 0.1\n\nMax: 100.0",
+			"description": "The rate of which the <cp>Delicious Decimals (DD)</c> increase.\n\nEnsure you enable the <cj>Distribution</c> in <cp>Delicious Dial (DD)</c> setting to use this feature.\n\nMin: 0.1\n\nMax: 100.0",
 			"type": "float",
 			"default": 10,
 			"min": 0.1,
@@ -41,9 +41,9 @@
 		},
 		"defect-debug": {
 			"name": "Defect Debug (DD)",
-			"description": "0% bugfix. <cc>Defect Debug (DD)</c> is most noticeable when play testing a level not from 0%.\n\nYour <cp>Delicious Decimals (DD)</c> (and progress bar) will be set to the correct percent in the level.",
+			"description": "<cc>Defect Debug (DD)</c> is 2.1 percentage.\n\nUse the classic 2.1 percentage in levels. It is most noticeable when using a start position not from 0%.\n\nYour <cp>Delicious Decimals (DD)</c> (and progress bar) will also be set to the correct percent in the level.",
 			"type": "bool",
-			"default": true
+			"default": false
 		}
 	},
     "links": {

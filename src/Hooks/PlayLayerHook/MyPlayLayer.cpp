@@ -51,7 +51,7 @@ void MyPlayLayer::updateProgressbar() {
         m_fields->wrappingInitialized = true;
     }
 
-    double percent = getActualProgress();
+    double percent = static_cast<double>(getCurrentPercent());
 
     if (m_fields->cachedPercentValue != percent) {
 
@@ -152,17 +152,16 @@ float MyPlayLayer::getAvailableWidth() {
     return std::max(available, 0.f);
 }
 
-double MyPlayLayer::getActualProgress() {
+float MyPlayLayer::getCurrentPercent() {
 
-    double percent;
-    if (Mod::get()->getSettingValue<bool>("defect-debug")) {
-        percent = std::clamp(this->m_player1->getPositionX() * 100.0 / this->m_levelLength, 0.0, 100.0);
-        this->m_progressFill->setTextureRect({0, 0, static_cast<float>(m_progressWidth * percent / 100.0), m_progressHeight});
+    float percent;
+    if (Mod::get()->getSettingValue<bool>("defect-debug") && this->m_levelLength != 0.f) {
+        percent = std::clamp(this->m_player1->getPositionX() * 100.f / this->m_levelLength, 0.f, 100.f);
     } else {
-        percent = static_cast<double>(this->getCurrentPercent());
+        percent = PlayLayer::getCurrentPercent();
     }
 
-    return std::clamp(percent, 0.0, 100.0);
+    return std::clamp(percent, 0.f, 100.f);
 }
 
 std::vector<float> MyPlayLayer::getCharacterAdvances(CCLabelBMFont* label) {
@@ -243,7 +242,7 @@ size_t MyPlayLayer::getDynamicDecimals(size_t decimalLength) {
 
     if (!m_percentageLabel) return 0;
 
-    double percent = getActualProgress();
+    double percent = static_cast<double>(getCurrentPercent());
     double rounded = std::floor(percent * 1000);
 
     if (m_fields->cachedPercentRounded == rounded) return m_fields->cachedDecimalLength;

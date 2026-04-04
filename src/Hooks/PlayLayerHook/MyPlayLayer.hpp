@@ -48,7 +48,7 @@ public:
     float getScreenWidth();
     float getScreenHeight();
     float getAvailableWidth();
-    double getActualProgress();
+    float getCurrentPercent();
     std::vector<float> getCharacterAdvances(CCLabelBMFont* label);
 
     size_t getMaxDecimals();

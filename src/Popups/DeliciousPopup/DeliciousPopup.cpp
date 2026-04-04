@@ -16,7 +16,7 @@ DeliciousPopup* DeliciousPopup::create() {
 
 bool DeliciousPopup::init(int value) {
 
-    if (!Popup::init(300.f, 210.f, "GJ_square04.png")) return false;
+    if (!Popup::init(300.f, 240.f, "GJ_square04.png")) return false;
 
     // Mod Settings
     deliciousDecimals = Mod::get()->getSettingValue<int64_t>("delicious-decimals");
@@ -46,7 +46,7 @@ bool DeliciousPopup::init(int value) {
     titleRow->setLayout(AnchorLayout::create());
     titleRow->setAnchorPoint({0.5f, 0.5f});
     titleRow->setContentSize({m_buttonMenu->getContentSize().height, 30.f});
-    titleRow->setID("title-row");
+    titleRow->setID("title-node");
 
     // D.D Text
     auto ddText = CCLabelBMFont::create("D.      D%", "goldFont.fnt");
@@ -76,10 +76,58 @@ bool DeliciousPopup::init(int value) {
     titleRow->updateLayout();
 
 
+    // Dial Input Row
+    // Container
+    auto dialRow = CCMenu::create();
+    dialRow->setLayoutOptions(AnchorLayoutOptions::create()->setAnchor(Anchor::Center)->setOffset({0.f, 40.f}));
+    dialRow->setLayout(AnchorLayout::create());
+    dialRow->setAnchorPoint({0.5f, 0.5f});
+    dialRow->setContentSize({m_buttonMenu->getContentSize().height, 30.f});
+    dialRow->setID("dial-node");
+
+    // Dial Left Button
+    auto leftSprite = CCSprite::createWithSpriteFrameName("GJ_arrow_01_001.png");
+    leftSprite->setScale(0.6f);
+    auto leftDialButton = CCMenuItemSpriteExtra::create(leftSprite, this, menu_selector(DeliciousPopup::onLeftDialButton));
+    leftDialButton->setLayoutOptions(AnchorLayoutOptions::create()->setAnchor(Anchor::Left)->setOffset({65.f, 0.f}));
+    leftDialButton->setID("left-dial-button");
+
+    // Dial Title
+    dialInput = TextInput::create(50.f, dialOptions[dialSettingIndex], "bigFont.fnt");
+    dialInput->setLayoutOptions(AnchorLayoutOptions::create()->setAnchor(Anchor::Center));
+    dialInput->setString(dialOptions[dialSettingIndex]);
+    dialInput->setScale(2.f);
+    dialInput->setEnabled(false);
+    dialInput->hideBG();
+    dialInput->setID("dial-label");
+
+    // Dial Right Button
+    auto rightSprite = CCSprite::createWithSpriteFrameName("GJ_arrow_01_001.png");
+    rightSprite->setFlipX(true);
+    rightSprite->setScale(0.6f);
+    auto rightDialButton = CCMenuItemSpriteExtra::create(rightSprite, this, menu_selector(DeliciousPopup::onRightDialButton));
+    rightDialButton->setLayoutOptions(AnchorLayoutOptions::create()->setAnchor(Anchor::Right)->setOffset({-65.f, 0.f}));
+    rightDialButton->setID("right-dial-button");
+
+    // Info Button
+    auto dialInfoSprite = CCSprite::createWithSpriteFrameName("GJ_infoIcon_001.png");
+    dialInfoSprite->setScale(0.6f);
+    auto dialInfoButton = CCMenuItemSpriteExtra::create(dialInfoSprite, this, menu_selector(DeliciousPopup::onDialInfoButton));
+    dialInfoButton->setLayoutOptions(AnchorLayoutOptions::create()->setAnchor(Anchor::Top)->setOffset({75.f, -5.f}));
+    dialInfoButton->setID("dial-info-button");
+
+    // Add To Dial Row
+    dialRow->addChild(dialInfoButton);
+    dialRow->addChild(leftDialButton);
+    dialRow->addChild(dialInput);
+    dialRow->addChild(rightDialButton);
+    dialRow->updateLayout();
+
+
     // Delicious Decimal Row
     // Delicious Decimal Container
     auto decimalRow = CCNode::create();
-    decimalRow->setLayoutOptions(AnchorLayoutOptions::create()->setAnchor(Anchor::Center)->setOffset({0.f, -31.f}));
+    decimalRow->setLayoutOptions(AnchorLayoutOptions::create()->setAnchor(Anchor::Center)->setOffset({0.f, -10.f}));
     decimalRow->setLayout(AnchorLayout::create());
     decimalRow->setAnchorPoint({0.5f, 0.5f});
     decimalRow->setContentSize({m_buttonMenu->getContentSize().height, 30.f});
@@ -138,58 +186,10 @@ bool DeliciousPopup::init(int value) {
     decimalRow->updateLayout();
 
 
-    // Dial Input Row
-    // Container
-    auto dialRow = CCMenu::create();
-    dialRow->setLayoutOptions(AnchorLayoutOptions::create()->setAnchor(Anchor::Center)->setOffset({0.f, 22.f}));
-    dialRow->setLayout(AnchorLayout::create());
-    dialRow->setAnchorPoint({0.5f, 0.5f});
-    dialRow->setContentSize({m_buttonMenu->getContentSize().height, 30.f});
-    dialRow->setID("dial-node");
-
-    // Dial Left Button
-    auto leftSprite = CCSprite::createWithSpriteFrameName("GJ_arrow_01_001.png");
-    leftSprite->setScale(0.6f);
-    auto leftDialButton = CCMenuItemSpriteExtra::create(leftSprite, this, menu_selector(DeliciousPopup::onLeftDialButton));
-    leftDialButton->setLayoutOptions(AnchorLayoutOptions::create()->setAnchor(Anchor::Left)->setOffset({50.f, 0.f}));
-    leftDialButton->setID("left-dial-button");
-
-    // Dial Title
-    dialInput = TextInput::create(50.f, dialOptions[dialSettingIndex], "bigFont.fnt");
-    dialInput->setLayoutOptions(AnchorLayoutOptions::create()->setAnchor(Anchor::Center));
-    dialInput->setString(dialOptions[dialSettingIndex]);
-    dialInput->setScale(2.f);
-    dialInput->setEnabled(false);
-    dialInput->hideBG();
-    dialInput->setID("dial-label");
-
-    // Dial Right Button
-    auto rightSprite = CCSprite::createWithSpriteFrameName("GJ_arrow_01_001.png");
-    rightSprite->setFlipX(true);
-    rightSprite->setScale(0.6f);
-    auto rightDialButton = CCMenuItemSpriteExtra::create(rightSprite, this, menu_selector(DeliciousPopup::onRightDialButton));
-    rightDialButton->setLayoutOptions(AnchorLayoutOptions::create()->setAnchor(Anchor::Right)->setOffset({-50.f, 0.f}));
-    rightDialButton->setID("right-dial-button");
-
-    // Info Button
-    auto dialInfoSprite = CCSprite::createWithSpriteFrameName("GJ_infoIcon_001.png");
-    dialInfoSprite->setScale(0.6f);
-    auto dialInfoButton = CCMenuItemSpriteExtra::create(dialInfoSprite, this, menu_selector(DeliciousPopup::onDialInfoButton));
-    dialInfoButton->setLayoutOptions(AnchorLayoutOptions::create()->setAnchor(Anchor::Top)->setOffset({75.f, -5.f}));
-    dialInfoButton->setID("dial-info-button");
-
-    // Add To Dial Row
-    dialRow->addChild(dialInfoButton);
-    dialRow->addChild(leftDialButton);
-    dialRow->addChild(dialInput);
-    dialRow->addChild(rightDialButton);
-    dialRow->updateLayout();
-
-
     // Growth Rate Row
     // Growth Container
     auto growthRateRow = CCNode::create();
-    growthRateRow->setLayoutOptions(AnchorLayoutOptions::create()->setAnchor(Anchor::Bottom)->setOffset({0.f, 50.f}));
+    growthRateRow->setLayoutOptions(AnchorLayoutOptions::create()->setAnchor(Anchor::Center)->setOffset({0.f, -32.f}));
     growthRateRow->setLayout(AnchorLayout::create());
     growthRateRow->setAnchorPoint({0.5f, 0.5f});
     growthRateRow->setContentSize({m_buttonMenu->getContentSize().height, 30.f});
@@ -244,6 +244,56 @@ bool DeliciousPopup::init(int value) {
     growthRateRow->updateLayout();
 
 
+    // Defect Debug Row
+    // Defect Container
+    auto defectRow = CCNode::create();
+    defectRow->setLayoutOptions(AnchorLayoutOptions::create()->setAnchor(Anchor::Bottom)->setOffset({0.f, 41.f}));
+    defectRow->setLayout(AnchorLayout::create());
+    defectRow->setAnchorPoint({0.5f, 0.5f});
+    defectRow->setContentSize({m_buttonMenu->getContentSize().height, 30.f});
+    defectRow->setID("defect-debug-node");
+
+    // Button Menu
+    auto defectButtonMenu = CCMenu::create();
+    defectButtonMenu->setLayoutOptions(AnchorLayoutOptions::create()->setAnchor(Anchor::Center));
+    defectButtonMenu->setLayout(AnchorLayout::create());
+    defectButtonMenu->setAnchorPoint({0.5f, 0.5f});
+    defectButtonMenu->setContentSize({m_buttonMenu->getContentSize().height, 30.f});
+    defectButtonMenu->setID("defect-debug-menu");
+
+    // Defect Title
+    auto defectTextTitle = CCLabelBMFont::create("Defect Debug (DD):", "bigFont.fnt");
+    defectTextTitle->setLayoutOptions(AnchorLayoutOptions::create()->setAnchor(Anchor::Center));
+    defectTextTitle->setScale(0.3f);
+    defectTextTitle->setID("defect-debug-label");
+
+    // Defect Toggle
+    auto offSprite = CCSprite::createWithSpriteFrameName("GJ_checkOff_001.png");
+    offSprite->setScale(0.6f);
+    auto onSprite = CCSprite::createWithSpriteFrameName("GJ_checkOn_001.png");
+    onSprite->setScale(0.6f);
+    auto defectToggle = CCMenuItemToggler::create(offSprite, onSprite, this, menu_selector(DeliciousPopup::toggleDefect));
+    defectToggle->setLayoutOptions(AnchorLayoutOptions::create()->setAnchor(Anchor::Bottom)->setOffset({0.f, -5.f}));
+    defectToggle->toggle(Mod::get()->getSettingValue<bool>("defect-debug") ? false : true);
+
+    // Button Info
+    auto defectInfoSprite = CCSprite::createWithSpriteFrameName("GJ_infoIcon_001.png");
+    defectInfoSprite->setScale(0.6f);
+    auto defectInfoButton = CCMenuItemSpriteExtra::create(defectInfoSprite, this, menu_selector(DeliciousPopup::onDefectInfoButton));
+    defectInfoButton->setLayoutOptions(AnchorLayoutOptions::create()->setAnchor(Anchor::Right)->setOffset({-46.f, 0.f}));
+    defectInfoButton->setID("defect-info-button");
+
+    // Add To Button Menu
+    defectButtonMenu->addChild(defectToggle);
+    defectButtonMenu->addChild(defectInfoButton);
+    defectRow->addChild(defectButtonMenu);
+ 
+    // Add To Growth Row
+    defectRow->addChild(defectTextTitle);
+    defectButtonMenu->updateLayout();
+    defectRow->updateLayout();
+
+
     // Corner Art
     // Top Left
     auto topLeftCorner = CCSprite::createWithSpriteFrameName("dailyLevelCorner_001.png");
@@ -285,6 +335,7 @@ bool DeliciousPopup::init(int value) {
     mainContainer->addChild(dialRow);
     mainContainer->addChild(decimalRow);
     mainContainer->addChild(titleRow);
+    mainContainer->addChild(defectRow);
     mainContainer->updateLayout();
 
     return true;
@@ -314,6 +365,13 @@ void DeliciousPopup::onRightDialButton(CCObject* sender) {
     Mod::get()->setSettingValue<std::string>("delicious-dial", dialOptions[dialSettingIndex]);
 }
 
+void DeliciousPopup::toggleDefect(CCObject* sender) {
+
+    auto toggler = static_cast<CCMenuItemToggler*>(sender);
+    bool newValue = toggler->isToggled();
+    Mod::get()->setSettingValue<bool>("defect-debug", newValue);
+}
+
 void DeliciousPopup::onDecimalInfoButton(CCObject* sender) {
 
     InfoPopup::create(
@@ -340,10 +398,21 @@ void DeliciousPopup::onRateInfoButton(CCObject* sender) {
 
     InfoPopup::create(
         "Delicious Deviation Degree (DDD)",
-        "The rate of which the <cp>Delicious Decimals (DD)</c> increase\n\n"
+        "The rate of which the <cp>Delicious Decimals (DD)</c> increase.\n\n"
         "Ensure you enable the <cj>Distribution</c> in <cp>Delicious Dial (DD)</c> setting to use this feature.\n\n"
         "Min: 0.1\n\n"
         "Max: 100.0",
+        180.f
+    )->show();
+}
+
+void DeliciousPopup::onDefectInfoButton(CCObject* sender) {
+
+    InfoPopup::create(
+        "Defect Debug (DD)",
+        "<cc>Defect Debug (DD)</c> is 2.1 percentage.\n\n"
+        "Use the classic 2.1 percentage in levels. It is most noticeable when using a start position not from 0%.\n\n"
+        "Your <cp>Delicious Decimals (DD)</c> (and progressbar) will also be set to the correct percent in the level.",
         180.f
     )->show();
 }
